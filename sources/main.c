@@ -6,161 +6,11 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/06 16:07:56 by htrent           ###   ########.fr       */
+/*   Updated: 2019/12/24 18:52:28 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
-#include "libft.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-
-# define DEF_CLR 0xff7f50//0x0099EE//////0x6f00ff
-
-# define KEY_ESC 53
-# define KEY_1_UP 18
-# define KEY_2_UP 19
-# define KEY_3_UP 20
-# define KEY_4_UP 21
-# define KEY_5_UP 23
-# define KEY_6_UP 22
-# define KEY_7_UP 26
-# define KEY_8_UP 28
-# define KEY_9_UP 25
-# define KEY_0_UP 29
-# define KEY_1_PAD 83
-# define KEY_2_PAD 84
-# define KEY_3_PAD 85
-# define KEY_4_PAD 86
-# define KEY_5_PAD 87
-# define KEY_6_PAD 88
-# define KEY_7_PAD 89
-# define KEY_8_PAD 91
-# define KEY_9_PAD 92
-# define KEY_0_PAD 82
-# define KEY_SPACE 49
-# define KEY_RIGHT 124
-# define KEY_LEFT  123
-# define KEY_UP    126
-# define KEY_DOWN  125
-# define KEY_MINUS 27
-# define KEY_PLUS  24
-
-
-# define WIDTH 1400
-# define HEIGHT 1000
-# define MENU_WIDTH		250
-# define BACKGROUND			0x222222
-# define MENU_BACKGROUND	0x1E1E1E
-
-typedef struct	s_stack
-{
-	int				z;
-	int				color;
-	struct s_stack	*next;
-
-}				t_stack;
-
-typedef	struct	s_point
-{
-	int 			x;
-	int 			y;
-	int 			z;
-	int 			color;
-}				t_point;
-
-typedef struct	s_fdf
-{
-	void	*mlx;
-	void	*win;
-	void	*img;
-	char 	*data_addr;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-	int		offset_x;
-	int		offset_y;
-	int		zoom;
-	t_point	**map;
-	int z_max;
-	int z_min;
-	int x;
-	int y;
-}				t_fdf;
-
-
-
-int		min(int a, int b)
-{
-	return ((a > b) ? b : a);
-}
-
-t_stack		*new_node(int z, int color)
-{
-	t_stack 	*node;
-	if (!(node = (t_stack *)malloc(sizeof(t_stack))))
-		return (NULL);
-	node->z = z;
-	node->color = color;
-	node->next = NULL;
-	return (node);
-}
-
-void	push(t_stack **stack, t_stack *node)
-{
-	if (!stack)
-		return ;
-	if (!*stack)
-		*stack = node;
-	else
-	{
-		node->next = *stack;
-		*stack = node;
-	}
-}
-
-void	free_stack(t_stack *stack)
-{
-	t_stack *to_del;
-
-	while(stack)
-	{
-		to_del = stack;
-		stack = stack->next;
-		free(to_del);
-	}
-}
-
-void	print_stack(t_stack *stack)
-{
-	if (!stack)
-		return ;
-	while (stack)
-	{
-		ft_putstr("z: ");
-		ft_putnbr(stack->z);
-		ft_putchar(' ');
-		ft_putnbr(stack->color);
-		ft_putchar('\n');
-		stack = stack->next;
-	}
-}
-
-
-void	put_pixel(t_fdf *fdf, t_point p, int color)
-{
-	int		i;
-
-	//printf("x: %d, y: %d\n", p.x, p.y);
-	if (p.x >= 0 && p.x < WIDTH && p.y >= 0 && p.y < HEIGHT)
-	{
-		i = (p.x * fdf->bits_per_pixel / 8) + (p.y * fdf->size_line);
-		fdf->data_addr[i] = color;
-		fdf->data_addr[++i] = color >> 8;
-		fdf->data_addr[++i] = color >> 16;
-	}
-}
+#include "fdf.h"
 
 int get_light(int start, int end, float percentage)
 {
@@ -177,48 +27,6 @@ int get_color(t_point p0, t_point p1, int percent)
 	g = get_light((p0.color >> 8) & 0xFF, (p1.color >> 8) & 0xFF, percent);
 	b = get_light(p0.color & 0xFF, p1.color & 0xFF, percent);
 	return ((r << 16) + (g << 8) + b);
-}
-
-void	put_line(t_fdf *fdf, t_point p0, t_point p1)
-{
-
-	int A;
-	int B;
-	int sign;
-	int signa;
-	int signb;
-	int f;
-	float length;
-	t_point p;
-
-	A = p1.y - p0.y;
-	B = p0.x - p1.x;
-	sign = (abs(A) > abs(B)) ? 1 : -1;
-	signa = (A < 0) ? -1 : 1;
-	signb = (B < 0) ? -1 : 1;
-	f = 0;
-	put_pixel(fdf, p0, p0.color);
-	p.x = p0.x;
-	p.y = p0.y;
-	length = sqrt(pow((p0.x - p1.x), 2) + pow((p0.y - p1.y), 2));
-	while (p.x != p1.x || p.y != p1.y)
-	{
-			f += (sign == 1) ? B * signb : A * signa;
-			if (f > 0)
-			{
-				f -= (sign == 1) ? A * signa : B * signb;
-				if (sign == 1)
-					p.x -= signb;
-				else
-					p.y += signa;
-			}
-			if (sign == 1)
-				p.y += signa;
-			else
-				p.x -= signb;
-			//printf("percent:%f r:%x g:%x b :%x color:%x\n", percent, r, g, b, color);
-			put_pixel(fdf, p, get_color(p0, p1, sqrt(pow((p.x - p0.x), 2) + pow((p.y - p0.y), 2)) / length)); //percent = sqrt(pow((p.x - p0.x), 2) + pow((p.y - p0.y), 2)) / length
-	}
 }
 
 void	print_map(t_point **map, int x, int y)
@@ -281,36 +89,32 @@ void init_max_min_z(t_fdf *fdf)
 {
 	int i;
 	int j;
-	int z_max;
-	int z_min;
 
-	z_max = fdf->map[0][0].z;
-	z_min = fdf->map[0][0].z;
+	fdf->z_max.z = fdf->map[0][0].z;
+	fdf->z_min.z = fdf->map[0][0].z;
 	i = 0;
-	while (i < fdf->y)
+	while (i < fdf->height)
 	{
 		j = 0;
-		while (j < fdf->x)
+		while (j < fdf->width)
 		{
-			if (fdf->map[i][j].z > z_max)
-				z_max = fdf->map[i][j].z;
-			if (fdf->map[i][j].z < z_min)
-				z_min = fdf->map[i][j].z;
+			if (fdf->map[i][j].z > fdf->z_max.z)
+				fdf->z_max = fdf->map[i][j];
+			if (fdf->map[i][j].z < fdf->z_min.z)
+				fdf->z_min = fdf->map[i][j];
 			j++;
 		}
 		i++;
 	}
-	fdf->z_min = z_min;
-	fdf->z_max = z_max;
 }
 
 int 	get_defcl(float percent)
 {
-	if (percent <= 0.3333)
+	if (percent <= 0.3334)
 		return (DEF_CLR);
-	if (percent <= 0.6666)
-		return (0x960018);
-	return (0x960018);
+	if (percent <= 0.6667)
+		return (DEF_CLR);
+	return (0xff0000);
 /*	if (percent < 0.1428)
 		return (0xff0000); //red
 	if (percent < 0.2857)
@@ -334,17 +138,77 @@ void	init_map_color(t_fdf *fdf)
 	int j;
 
 	i = 0;
-	deltaz = fdf->z_max - fdf->z_min;
-	while (i < fdf->y)
+	deltaz = fdf->z_max.z - fdf->z_min.z;
+	while (i < fdf->height)
 	{
 		j = 0;
-		while (j < fdf->x)
+		while (j < fdf->width)
 		{
 			fdf->map[i][j].color = get_defcl(fdf->map[i][j].z / deltaz);
 			j++;
 		}
 		i++;
 	}
+	fdf->map[fdf->height / 2][fdf->width / 2].color = 0xff0000;
+}
+
+void	rotate_x(int *y, int *z, double alpha)
+{
+	int previous_y;
+
+	previous_y = *y;
+	*y = previous_y * cos(alpha) + *z * sin(alpha);
+	*z = -previous_y * sin(alpha) + *z * cos(alpha);
+}
+
+
+void	rotate_y(int *x, int *z, double beta)
+{
+	int previous_x;
+
+	previous_x = *x;
+	*x = previous_x * cos(beta) + *z * sin(beta);
+	*z = -previous_x * sin(beta) + *z * cos(beta);
+}
+
+
+void	rotate_z(int *x, int *y, double gamma)
+{
+	int previous_x;
+	int previous_y;
+
+	previous_x = *x;
+	previous_y = *y;
+	*x = previous_x * cos(gamma) - previous_y * sin(gamma);
+	*y = previous_x * sin(gamma) + previous_y * cos(gamma);
+}
+
+void	iso_projection(t_point *p)
+{
+	int prev_x;
+	int prev_y;
+
+	prev_x = p->x;
+	prev_y = p->y;
+	p->x = (prev_x - prev_y) * cos(M_PI / 6);			//x = (prev_x - prev_y) * cos(M_PI/6);
+	p->y = (prev_x + prev_y) * sin(M_PI / 6) - p->z;	//y = (prev_x + prev_y) * sin(M_PI_6) - z;
+}
+
+t_point		project(t_point p, t_fdf *fdf)
+{
+	p.x *= fdf->zoom;
+	p.y *= fdf->zoom;
+	p.z *= fdf->zoom / fdf->z_high;
+	p.x -= (fdf->width * fdf->zoom) / 2;
+	p.y -= (fdf->height * fdf->zoom) / 2;
+	rotate_x(&p.y, &p.z, fdf->alpha);
+	rotate_y(&p.x, &p.z, fdf->beta);
+	rotate_z(&p.x, &p.y, fdf->gamma);
+	if (fdf->projection == ISO)
+		iso_projection(&p);
+	p.x += (WIDTH - MENU_WIDTH) / 2 + fdf->offset_x + MENU_WIDTH;
+	p.y += (HEIGHT + fdf->height * fdf->zoom) / 2 + fdf->offset_y;
+	return (p);
 }
 
 t_fdf	*fdf_init(t_point **map, int x, int y)
@@ -352,51 +216,45 @@ t_fdf	*fdf_init(t_point **map, int x, int y)
 	t_fdf	*fdf;
 
 	fdf = (t_fdf *)malloc(sizeof(t_fdf));
-	fdf->offset_x = WIDTH / 2;
-	fdf->offset_y = HEIGHT / 2;
-	fdf->zoom = 40;
+	fdf->offset_x = 0;
+	fdf->offset_y = 0;
 	fdf->mlx = mlx_init();
 	fdf->win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "FDF");
 	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
 	fdf->data_addr = mlx_get_data_addr(fdf->img, &(fdf->bits_per_pixel), &(fdf->size_line), &(fdf->endian));
 	ft_bzero(fdf->data_addr, WIDTH * HEIGHT * (fdf->bits_per_pixel / 8));
 	fdf->map = map;
-	fdf->x = x;
-	fdf->y = y;
+	fdf->width = x;
+	fdf->height = y;
 	init_max_min_z(fdf);
+	fdf->alpha = 0;
+	fdf->beta = 0;
+	fdf->gamma = 0;
+	fdf->projection = 0;
+	fdf->z_high = 1;
+	fdf->zoom = min(WIDTH / (2 * fdf->width), HEIGHT / (2 * fdf->height));
 	init_map_color(fdf);
 	return (fdf);
 }
 
-t_point	iso_projection(t_point p, t_fdf *fdf)
-{
-	int prev_x;
-	int prev_y;
 
-	prev_x = p.x;
-	prev_y = p.y;
-	p.x = fdf->offset_x + ((prev_x - prev_y) * cos(M_PI / 6)) * fdf->zoom;			//x = (prev_x - prev_y) * cos(M_PI/6);
-	p.y = fdf->offset_y + ((prev_x + prev_y) * sin(M_PI / 6) - p.z) * fdf->zoom;	//y = (prev_x + prev_y) * sin(M_PI_6) - z;
-	p.color += 10 * p.z;
-	return (p);
-}
 
 void	draw_map(t_fdf *fdf)
 {
 	int i;
 	int j;
 
-	ft_bzero(fdf->data_addr, WIDTH * HEIGHT * (fdf->bits_per_pixel / 8));
 	i = 0;
-	while (i < fdf->y)
+	ft_bzero(fdf->data_addr, WIDTH * HEIGHT * (fdf->bits_per_pixel / 8));
+	while (i < fdf->height)
 	{
 		j = 0;
-		while (j < fdf->x)
+		while (j < fdf->width)
 		{
-			if (j < fdf->x - 1)
-				put_line(fdf, iso_projection(fdf->map[i][j], fdf), iso_projection(fdf->map[i][j + 1], fdf));
-			if (i < fdf->y - 1)
-				put_line(fdf, iso_projection(fdf->map[i][j], fdf), iso_projection(fdf->map[i + 1][j], fdf));
+			if (j < fdf->width - 1)
+				put_line(fdf, project(fdf->map[i][j], fdf), project(fdf->map[i][j + 1], fdf));
+			if (i < fdf->height - 1)
+				put_line(fdf, project(fdf->map[i][j], fdf), project(fdf->map[i + 1][j], fdf));
 			j++;
 		}
 		i++;
@@ -413,14 +271,41 @@ int		deal_key(int keycode, t_fdf *fdf)
 		fdf->zoom--;
 	if (keycode == KEY_PLUS)
 		fdf->zoom++;
-	if (keycode == KEY_UP || keycode == KEY_8_PAD)
-		fdf->offset_y -= 5;
-	if (keycode == KEY_DOWN || keycode == KEY_2_PAD)
-		fdf->offset_y += 5;
-	if (keycode == KEY_LEFT || keycode == KEY_4_PAD)
-		fdf->offset_x -= 5;
-	if (keycode == KEY_RIGHT || keycode == KEY_6_PAD)
-		fdf->offset_x += 5;
+	if (keycode == KEY_UP)
+		fdf->offset_y -= 10/*fdf->zoom / 5 + 1*/;
+	if (keycode == KEY_DOWN)
+		fdf->offset_y += 10/*fdf->zoom / 5 + 1*/;
+	if (keycode == KEY_LEFT)
+		fdf->offset_x -= 10/*fdf->zoom / 5 + 1*/;
+	if (keycode == KEY_RIGHT)
+		fdf->offset_x += 10/*fdf->zoom / 5 + 1*/;
+	if (keycode == KEY_6_PAD)
+		fdf->beta += 0.05;
+	if (keycode == KEY_4_PAD)
+		fdf->beta -= 0.05;
+	if (keycode == KEY_8_PAD)
+		fdf->alpha += 0.05;
+	if (keycode == KEY_2_PAD)
+		fdf->alpha -= 0.05;
+	if (keycode == KEY_1_PAD || keycode == KEY_3_PAD)
+		fdf->gamma += 0.05;
+	if (keycode == KEY_7_PAD || keycode == KEY_9_PAD)
+		fdf->gamma -= 0.05;
+	if (keycode == KEY_I || keycode == KEY_P)
+	{
+		fdf->projection = (keycode == KEY_I) ? ISO : PARALLEL;
+		fdf->alpha = 0;
+		fdf->beta = 0;
+		fdf->gamma = 0;
+		fdf->offset_x = 0;
+		fdf->offset_y = 0;
+		fdf->zoom = 30;
+		fdf->z_high = 1;
+	}
+	if (keycode == KEY_MORE && fdf->z_high > 0.1)
+		fdf->z_high -= 0.1;
+	if (keycode == KEY_LESS && fdf->z_high <= 20)
+		fdf->z_high += 0.1;
 	draw_map(fdf);
 	return (keycode);
 }
@@ -437,8 +322,6 @@ int		main(int argc, char **argv)
 	t_fdf	*fdf;
 	int i;
 
-	///#
-	///#____READ_FROM_FILE____
 	int		fd;
 	t_stack *coord;
 	char	*line;
@@ -451,13 +334,13 @@ int		main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		write(1, "I need a file:((((\n", 19);
+		ft_puterr("Usage: ./fdf file_with_map\n");
 		return (0);
 	}
 
 	if ((fd = open(argv[1], O_RDONLY)) <= 0)
 	{
-		write(1, "Please, give me existed file!!!\n", 32);
+		ft_puterr("Wrong filename...\nGive me existed file\n._.\n");
 		return (0);
 	}
 
@@ -472,8 +355,8 @@ int		main(int argc, char **argv)
 				split_coord_color = ft_strsplit(*split_line, ',');
 				if (!split_coord_color[1])
 					color = DEF_CLR;
-		//		else
-		//			color = ft_atoi_base(split_coord_color[1], 16);							///WRITE_ATOI_BASE!!!!!!
+//						else
+//					color = ft_atoi_base(split_coord_color[1], 16);						///WRITE_ATOI_BASE!!!!!!
 				push(&coord, new_node(ft_atoi(split_coord_color[0]), color));
 				split_line++;
 				x++;
@@ -489,58 +372,31 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 
-	print_map(map, x, y);
-	///#____END_READ_______
-	///#
+	//print_map(map, x, y);
 
 	fdf = fdf_init(map, x, y);
 
-	///PLACE IN CENTER
-	fdf->offset_y += HEIGHT / 2 - fabs(((map[y / 2][x / 2].x + map[y / 2][x / 2].y) * sin(M_PI / 6) - map[y / 2][x / 2].z) * fdf->zoom + fdf->offset_y);
-	fdf->offset_x += WIDTH / 2 - fabs((map[y / 2][x / 2].x - map[y / 2][x / 2].y) * cos(M_PI / 6) * fdf->zoom + fdf->offset_x);
-
-	///CHECKFORZOOM
-	printf("ZOOM:\n%f\n%f\n",(((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) - ((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z)) * fdf->zoom,
-		   (((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6)) - ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6))) * fdf->zoom);
-	if ((((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) - ((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z)) * fdf->zoom > HEIGHT)
-		fdf->zoom = HEIGHT / (((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z) - ((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z));
-	if ((((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6)) - ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6))) * fdf->zoom > WIDTH)
-		fdf->zoom = WIDTH / (((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6)) - ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6)));
-
-	///CHECKFOROFFSET
-	if (((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z) * fdf->zoom + fdf->offset_y < 0 && printf("OFFSET_Y1\n"))
-		fdf->offset_y = HEIGHT - ((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z) * fdf->zoom;
-	if (((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) * fdf->zoom + fdf->offset_y > HEIGHT && printf("OFFSET_Y2\n"))
-		fdf->offset_y = HEIGHT - ((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) * fdf->zoom;
-	if ((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6) * fdf->zoom + fdf->offset_x < 0 && printf("OFFSET_X1\n"))
-		fdf->offset_x = -1 * (map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6) * fdf->zoom;
-	if ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6) * fdf->zoom + fdf->offset_x > WIDTH && printf("OFFSET_X2\n"))
-		fdf->offset_x = WIDTH + -1 * (map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6) * fdf->zoom;
-
-
 	///______________________FOR ME:
 	/// Check offset (for max_z and min_z)!!!!!!!!1
-	/// Add rotation. Add parallel projection. 
+	/// Add rotation. Add parallel projection.
 	/// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
-	///##
-	///##____TRY_TO_DRAW____
 	draw_map(fdf);
-
-	///##____END_OF_TRY_____
-	///##
-
 	mlx_hook(fdf->win, 17, 0, exit_program, fdf);
 	mlx_hook(fdf->win, 2, 0, deal_key, fdf);
 	mlx_loop(fdf->mlx);
 
-	free(fdf);
+
+
 	i = 0;
 	while (i < y)
 		free(map[i++]);
 	free(map);
+
+	free(fdf->mlx);
+	free(fdf->win);
+	free(fdf->img);
+	free(fdf);
 	free_stack(coord);
 
 	return (0);
@@ -549,16 +405,36 @@ int		main(int argc, char **argv)
 
 
 
+//x = (prev_x - prev_y) * cos(M_PI/6);
+//y = (prev_x + prev_y) * sin(M_PI_6) - z;
+
+//CHECKFORZOOM
+//printf("ZOOM:\n%f\n%f\n",(((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) - ((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z)) * fdf->zoom,
+//	   (((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6)) - ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6))) * fdf->zoom);
+//if (fabs(((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) - ((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z)) * fdf->zoom > HEIGHT && printf("CHANGED ZOOM Y\n"))
+//	fdf->zoom = fabs(HEIGHT / (((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z) - ((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z)));
+//if (fabs(((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6)) - ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6))) * fdf->zoom > WIDTH && printf("CHANGED ZOOM X\n"))
+//	fdf->zoom = fabs(WIDTH / (((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6)) - ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6))));
+//if (fabs(((fdf->z_max.x + fdf->z_max.y) * sin(M_PI / 6) - fdf->z_max.z) - ((fdf->z_min.x + fdf->z_min.y) * sin(M_PI / 6) - fdf->z_min.z)) * fdf->zoom > HEIGHT && printf("CHANGED ZOOM MAX\n"))
+//	fdf->zoom = fabs(HEIGHT / fabs(((fdf->z_max.x + fdf->z_max.y) * sin(M_PI / 6) - fdf->z_max.z) - ((fdf->z_min.x + fdf->z_min.y) * sin(M_PI / 6) - fdf->z_min.z))) - 1;
+
+//PLACE IN CENTER
+//fdf->offset_y = HEIGHT / 2 - ((map[fdf->height / 2][fdf->width / 2].x + map[fdf->height / 2][fdf->width / 2].y) * sin(M_PI / 6)/* - map[fdf->height / 2][fdf->width / 2].z*/) * fdf->zoom;
+//fdf->offset_x = WIDTH / 2 - (map[fdf->height / 2][fdf->width / 2].x - map[fdf->height / 2][fdf->width / 2].y) * cos(M_PI / 6) * fdf->zoom;
+//printf("offsets: %d %d %f %f\n", fdf->offset_y, fdf->offset_x, ((map[fdf->height / 2][fdf->width / 2].x + map[fdf->height / 2][fdf->width / 2].y) * sin(M_PI / 6) - map[fdf->height / 2][fdf->width / 2].z) * fdf->zoom, (map[fdf->height / 2][fdf->width / 2].x - map[fdf->height / 2][fdf->width / 2].y) * cos(M_PI / 6) * fdf->zoom);
 
 
 
 
-
-
-
-
-
-
+/*///CHECKFOROFFSET
+if ((((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z) * fdf->zoom + fdf->offset_y < 0) && printf("OFFSET_Y1\n"))
+	fdf->offset_y = HEIGHT - ((map[0][0].x + map[0][0].y) * sin(M_PI / 6) - map[0][0].z) * fdf->zoom;
+if (((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) * fdf->zoom + fdf->offset_y > HEIGHT && printf("OFFSET_Y2\n"))
+	fdf->offset_y = HEIGHT - ((map[y - 1][x - 1].x + map[y - 1][x - 1].y) * sin(M_PI / 6) - map[y - 1][x - 1].z) * fdf->zoom;
+if ((map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6) * fdf->zoom + fdf->offset_x < 0 && printf("OFFSET_X1\n"))
+	fdf->offset_x = -1 * (map[y - 1][0].x - map[y - 1][0].y) * cos(M_PI / 6) * fdf->zoom;
+if ((map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6) * fdf->zoom + fdf->offset_x > WIDTH && printf("OFFSET_X2\n"))
+	fdf->offset_x = WIDTH + -1 * (map[0][x - 1].x - map[0][x - 1].y) * cos(M_PI / 6) * fdf->zoom;*/
 
 /*
 ///###_______DRAW_NET_____
