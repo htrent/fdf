@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/24 18:54:15 by htrent           ###   ########.fr       */
+/*   Updated: 2019/12/26 18:47:48 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@
 # define ISO 0
 # define PARALLEL 1
 
+# define NOTPRESSED 0
+# define PRESSED_LEFT 1
+# define PRESSED_RIGHT 2
+
+# define MOUSE_LEFT_CLICK 1
+# define MOUSE_RIGHT_CLICK 2
+# define MOUSE_MID_CLICK 3
+# define MOUSE_SCROLL_DOWN 4
+# define MOUSE_SCROLL_UP 5
+
 typedef struct		s_stack
 {
 	int				z;
@@ -104,6 +114,9 @@ typedef struct	s_fdf
 	int 		width;
 	int 		height;
 	float 		z_high;
+	int 		mouse_status;
+	t_point		mouse_pos;
+	t_point 	mouse_prevpos;
 }				t_fdf;
 
 void		ft_puterr(char *str);
@@ -115,7 +128,7 @@ void		print_stack(t_stack *stack);
 void		put_pixel(t_fdf *fdf, t_point p, int color);
 void		put_line(t_fdf *fdf, t_point p0, t_point p1);
 int 		get_light(int start, int end, float percentage);
-int 		get_color(t_point p0, t_point p1, int percent);
+int 		get_color(t_point p0, t_point p1, float percent);
 void		print_map(t_point **map, int x, int y);
 t_point		**stack_to_map(t_stack *coord, int x, int y);
 void 		init_max_min_z(t_fdf *fdf);
@@ -130,5 +143,9 @@ t_fdf		*fdf_init(t_point **map, int x, int y);
 void		draw_map(t_fdf *fdf);
 int			deal_key(int keycode, t_fdf *fdf);
 int			exit_program(void *param);
-
+int			mouse_press(int button, int x, int y, t_fdf *fdf);
+int			mouse_release(int button, int x, int y, t_fdf *fdf);
+int			mouse_move(int x, int y, t_fdf *fdf);
+void		mlx_hooks(t_fdf *fdf);
+t_point		read_to_stack(int fd, t_stack **coord);
 #endif

@@ -21,7 +21,7 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST = main.c utils.c stack.c drawing.c
+SOURCES_LIST = main.c utils.c stack.c drawing.c mouse.c read.c ctrls.c projection.c map.c color.c init.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objects/
@@ -53,7 +53,7 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)
 
 $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
-	@echo "$(BOLD_MAGENTA)Creating object files in $(OBJECTS_DIRECTORY)$(RESET)"
+	@echo "$(BOLD_MAGENTA)Creating object file $(BOLD_CYAN)$<$(RESET) $(BOLD_MAGENTA)in $(OBJECTS_DIRECTORY)$(RESET)"
 	@$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
 
 $(LIBFT):

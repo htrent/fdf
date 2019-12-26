@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/24 14:33:30 by htrent           ###   ########.fr       */
+/*   Updated: 2019/12/26 18:22:38 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,27 @@ void	put_line(t_fdf *fdf, t_point p0, t_point p1)
 		//printf("percent:%f r:%x g:%x b :%x color:%x\n", percent, r, g, b, color);
 		put_pixel(fdf, p, get_color(p0, p1, sqrt(pow((p.x - p0.x), 2) + pow((p.y - p0.y), 2)) / length)); //percent = sqrt(pow((p.x - p0.x), 2) + pow((p.y - p0.y), 2)) / length
 	}
+}
+
+void	draw_map(t_fdf *fdf)
+{
+	int i;
+	int j;
+
+	i = 0;
+	ft_bzero(fdf->data_addr, WIDTH * HEIGHT * (fdf->bits_per_pixel / 8));
+	while (i < fdf->height)
+	{
+		j = 0;
+		while (j < fdf->width)
+		{
+			if (j < fdf->width - 1)
+				put_line(fdf, project(fdf->map[i][j], fdf), project(fdf->map[i][j + 1], fdf));
+			if (i < fdf->height - 1)
+				put_line(fdf, project(fdf->map[i][j], fdf), project(fdf->map[i + 1][j], fdf));
+			j++;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 }
