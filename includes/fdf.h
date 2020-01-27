@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:10:33 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:48:11 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define KEY_I 34
 # define KEY_P 35
 # define KEY_T 17
+# define KEY_M 46
 # define KEY_MORE 47
 # define KEY_LESS 43
 
@@ -91,6 +92,8 @@
 
 # define NOT_TRANSPARENT 0
 # define TRANSPARENT 1
+# define NOT_PERMANENT 0
+# define PERMANENT 1
 typedef struct		s_stack
 {
 	int				z;
@@ -144,7 +147,8 @@ typedef struct	s_fdf
 	t_point		mouse_pos;
 	t_point 	mouse_prevpos;
 	char		*map_name;
-	int         menu;
+	int         menu_tr;
+	int			menu;
 }				t_fdf;
 
 void		ft_puterr(char *str);
@@ -187,4 +191,6 @@ void		error(char *s);
 void		rotation(int keycode, t_fdf *fdf);
 void		change_proj(int keycode, t_fdf *fdf);
 void		zoom_and_move(int keycode, t_fdf *fdf);
+void		show_hint(t_fdf *fdf);
+void		show_text(t_fdf *fdf);
 #endif

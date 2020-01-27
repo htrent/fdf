@@ -6,11 +6,33 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:14:42 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:53:58 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	show_text(t_fdf *fdf)
+{
+	if ((fdf->mouse_pos.x < MENU_WIDTH && fdf->mouse_pos.y < MENU_HEIGHT &&
+		fdf->menu == NOT_PERMANENT) || fdf->menu == PERMANENT)
+		show_menu(fdf);
+	else
+		show_hint(fdf);
+	show_program(fdf);
+}
+
+void	show_hint(t_fdf *fdf)
+{
+	mlx_string_put(fdf->mlx, fdf->win, 50, 80, 0x222222,
+				   "PLACE YOUR MOUSE");
+	mlx_string_put(fdf->mlx, fdf->win, 100, 130, 0x222222,
+				   "HERE");
+	mlx_string_put(fdf->mlx, fdf->win, 80, 180, 0x222222,
+				   "FOR MENU");
+	mlx_string_put(fdf->mlx, fdf->win, 50, 230, 0x222222,
+				   "(or press M key)");
+}
 
 void	show_program(t_fdf *fdf)
 {

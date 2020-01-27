@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:13:48 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:16:17 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 void	put_rectangles(t_fdf *fdf)
 {
-	if (fdf->mouse_pos.x < MENU_WIDTH && fdf->mouse_pos.y < MENU_HEIGHT)
+	if ((fdf->mouse_pos.x < MENU_WIDTH && fdf->mouse_pos.y < MENU_HEIGHT &&
+		fdf->menu == NOT_PERMANENT) || fdf->menu == PERMANENT)
 	{
-		if (fdf->menu == TRANSPARENT)
+		if (fdf->menu_tr == TRANSPARENT)
 			put_transparent_rectangle(fdf, new_point(0, HEIGHT_OF_HEADER + 10,
 					MENU_BACKGROUND), MENU_WIDTH, MENU_HEIGHT);
-		if (fdf->menu == NOT_TRANSPARENT)
+		if (fdf->menu_tr == NOT_TRANSPARENT)
 			put_rectangle(fdf, new_point(0, HEIGHT_OF_HEADER + 10,
 					MENU_BACKGROUND), MENU_WIDTH, MENU_HEIGHT);
 	}

@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 17:49:21 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:05:13 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_fdf	*fdf_init(t_map *map)
 	fdf->mouse_status = NOTPRESSED;
 	fdf->mouse_pos.x = WIDTH / 2;
 	fdf->mouse_pos.y = HEIGHT / 2;
-	fdf->menu = NOT_TRANSPARENT;
+	fdf->menu_tr = NOT_TRANSPARENT;
+	fdf->menu = NOT_PERMANENT;
 	return (fdf);
 }

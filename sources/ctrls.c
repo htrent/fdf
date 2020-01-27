@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/22 21:13:36 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:48:44 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ int		deal_key(int keycode, t_fdf *fdf)
 	if (keycode == KEY_LESS && fdf->z_high <= 20)
 		fdf->z_high += 0.1;
 	if (keycode == KEY_T)
-        fdf->menu = (fdf->menu == TRANSPARENT) ? NOT_TRANSPARENT : TRANSPARENT;
+        fdf->menu_tr = (fdf->menu_tr == TRANSPARENT) ? NOT_TRANSPARENT : TRANSPARENT;
+	if (keycode == KEY_M)
+		fdf->menu = (fdf->menu == PERMANENT) ? NOT_PERMANENT : PERMANENT;
 	draw_map(fdf);
 	return (keycode);
 }
