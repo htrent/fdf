@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 14:03:47 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:05:13 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int		ft_isdigit_base(char c, int base)
 	return (-1);
 }
 
-static int	ft_has_prefix(const char *str, int base)
+static int		ft_has_prefix(const char *str, int base)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ static int	ft_has_prefix(const char *str, int base)
 	return (0);
 }
 
-int			ft_isnumber(char *str, int base)
+int				ft_isnumber(char *str, int base)
 {
 	int		i;
 	int		digits;

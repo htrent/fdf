@@ -6,19 +6,18 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 18:04:36 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 18:08:37 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-
-int get_light(int start, int end, float percentage)
+int		get_light(int start, int end, float percentage)
 {
 	return ((1 - percentage) * start + percentage * end);
 }
 
-int get_color(t_point p0, t_point p1, float percent)
+int		get_color(t_point p0, t_point p1, float percent)
 {
 	int r;
 	int g;
@@ -30,7 +29,7 @@ int get_color(t_point p0, t_point p1, float percent)
 	return ((r << 16) + (g << 8) + b);
 }
 
-int 	get_defcl(int z, t_map *map)
+int		get_defcl(int z, t_map *map)
 {
 	double percent;
 

@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 18:04:36 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 18:38:28 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	stack_to_map(t_stack **coord, t_map *map)
 {
-	t_stack *temp;
-	int 	i;
+	t_stack	*temp;
+	int		i;
 
 	if (!(map->coords = (t_cmap *)malloc(sizeof(t_cmap) * map->width
 			* map->height)))
@@ -31,4 +31,3 @@ void	stack_to_map(t_stack **coord, t_map *map)
 		free(temp);
 	}
 }
-

@@ -6,18 +6,18 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:05:13 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 21:06:59 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_map	*map_init()
+t_map	*map_init(void)
 {
 	t_map	*map;
 
 	if (!(map = (t_map*)malloc(sizeof(t_map))))
-		return (NULL); //add terminate
+		return (0);
 	map->width = 0;
 	map->height = 0;
 	map->coords = NULL;
@@ -45,7 +45,8 @@ t_fdf	*fdf_init(t_map *map)
 	fdf->gamma = 0;
 	fdf->projection = ISO;
 	fdf->z_high = 1;
-	fdf->zoom = min(WIDTH / (2 * fdf->map->width), HEIGHT / (2 * fdf->map->height));
+	fdf->zoom = min(WIDTH / (2 * fdf->map->width),
+			HEIGHT / (2 * fdf->map->height));
 	fdf->mouse_status = NOTPRESSED;
 	fdf->mouse_pos.x = WIDTH / 2;
 	fdf->mouse_pos.y = HEIGHT / 2;

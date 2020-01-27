@@ -6,13 +6,13 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:21:35 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 21:10:18 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	put_pixel(t_fdf *fdf, t_point p, int color)
+void			put_pixel(t_fdf *fdf, t_point p, int color)
 {
 	int	i;
 
@@ -26,12 +26,12 @@ void	put_pixel(t_fdf *fdf, t_point p, int color)
 	}
 }
 
-static void	action(t_point *p, int sign[3], int A, int B, int *f)
+static void		action(t_point *p, int sign[3], int v[2], int *f)
 {
-	*f += (sign[0] == 1) ? B * sign[2] : A * sign[1];
+	*f += (sign[0] == 1) ? v[1] * sign[2] : v[0] * sign[1];
 	if (*f > 0)
 	{
-		*f -= (sign[0] == 1) ? A * sign[1] : B * sign[2];
+		*f -= (sign[0] == 1) ? v[0] * sign[1] : v[1] * sign[2];
 		if (sign[0] == 1)
 			p->x -= sign[2];
 		else
@@ -43,33 +43,32 @@ static void	action(t_point *p, int sign[3], int A, int B, int *f)
 		p->x -= sign[2];
 }
 
-void	put_line(t_fdf *fdf, t_point p0, t_point p1)
+void			put_line(t_fdf *fdf, t_point p0, t_point p1)
 {
-	int A;
-	int B;
-	int sign[3];
-	int f;
-	float length;
+	int		v[2];
+	int		sign[3];
+	int		f;
+	float	length;
 	t_point p;
 
-	A = p1.y - p0.y;
-	B = p0.x - p1.x;
-	sign[0] = (abs(A) > abs(B)) ? 1 : -1;
-	sign[1] = (A < 0) ? -1 : 1;
-	sign[2] = (B < 0) ? -1 : 1;
+	v[0] = p1.y - p0.y;
+	v[1] = p0.x - p1.x;
+	sign[0] = (abs(v[0]) > abs(v[1])) ? 1 : -1;
+	sign[1] = (v[0] < 0) ? -1 : 1;
+	sign[2] = (v[1] < 0) ? -1 : 1;
 	f = 0;
 	put_pixel(fdf, p0, p0.color);
 	p = p0;
 	length = sqrt(pow((p0.x - p1.x), 2) + pow((p0.y - p1.y), 2));
 	while (p.x != p1.x || p.y != p1.y)
 	{
-		action(&p, sign, A, B, &f);
+		action(&p, sign, v, &f);
 		put_pixel(fdf, p, get_color(p0, p1, sqrt(pow((p.x - p0.x), 2)
 		+ pow((p.y - p0.y), 2)) / length));
 	}
 }
 
-void	draw_map(t_fdf *fdf)
+void			draw_map(t_fdf *fdf)
 {
 	int x;
 	int y;

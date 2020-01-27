@@ -25,13 +25,13 @@ void	show_text(t_fdf *fdf)
 void	show_hint(t_fdf *fdf)
 {
 	mlx_string_put(fdf->mlx, fdf->win, 50, 80, 0x222222,
-				   "PLACE YOUR MOUSE");
+			"PLACE YOUR MOUSE");
 	mlx_string_put(fdf->mlx, fdf->win, 100, 130, 0x222222,
-				   "HERE");
+			"HERE");
 	mlx_string_put(fdf->mlx, fdf->win, 80, 180, 0x222222,
-				   "FOR MENU");
+			"FOR MENU");
 	mlx_string_put(fdf->mlx, fdf->win, 50, 230, 0x222222,
-				   "(or press M key)");
+			"(or press M key)");
 }
 
 void	show_program(t_fdf *fdf)

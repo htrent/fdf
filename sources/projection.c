@@ -6,13 +6,13 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 12:46:59 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 21:03:58 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	rotate_x(int *y, int *z, double alpha)
+void		rotate_x(int *y, int *z, double alpha)
 {
 	int previous_y;
 
@@ -21,8 +21,7 @@ void	rotate_x(int *y, int *z, double alpha)
 	*z = -previous_y * sin(alpha) + *z * cos(alpha);
 }
 
-
-void	rotate_y(int *x, int *z, double beta)
+void		rotate_y(int *x, int *z, double beta)
 {
 	int previous_x;
 
@@ -31,8 +30,7 @@ void	rotate_y(int *x, int *z, double beta)
 	*z = -previous_x * sin(beta) + *z * cos(beta);
 }
 
-
-void	rotate_z(int *x, int *y, double gamma)
+void		rotate_z(int *x, int *y, double gamma)
 {
 	int previous_x;
 	int previous_y;
@@ -43,7 +41,7 @@ void	rotate_z(int *x, int *y, double gamma)
 	*y = previous_x * sin(gamma) + previous_y * cos(gamma);
 }
 
-void	iso_projection(t_point *p)
+void		iso_projection(t_point *p)
 {
 	int prev_x;
 	int prev_y;

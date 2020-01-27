@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:16:17 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 19:49:58 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	put_rectangles(t_fdf *fdf)
 	put_rectangle(fdf, new_point(5, 5, HEADER_COLOR),
 			(ft_strlen(fdf->map_name) + 6) * 10, HEIGHT_OF_HEADER);
 }
-
 
 void	put_rectangle(t_fdf *fdf, t_point p, int width, int height)
 {

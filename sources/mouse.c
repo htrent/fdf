@@ -55,4 +55,3 @@ int			mouse_move(int x, int y, t_fdf *fdf)
 	draw_map(fdf);
 	return (0);
 }
-

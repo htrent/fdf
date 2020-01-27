@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 17:58:49 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 17:59:25 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int		main(int argc, char **argv)
 {
 	t_fdf	*fdf;
 	int		fd;
-	t_stack *coord;
-	t_map 	*map;
+	t_stack	*coord;
+	t_map	*map;
 
 	if (argc != 2)
 		error("Usage: ./fdf file_with_map\n");

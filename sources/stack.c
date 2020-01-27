@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 12:19:47 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 20:59:12 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 t_stack		*new_node(int z, int color)
 {
-	t_stack 	*node;
+	t_stack	*node;
+
 	if (!(node = (t_stack *)malloc(sizeof(t_stack))))
 		return (NULL);
 	node->z = z;
@@ -23,7 +24,7 @@ t_stack		*new_node(int z, int color)
 	return (node);
 }
 
-void	push(t_stack **stack, t_stack *node)
+void		push(t_stack **stack, t_stack *node)
 {
 	if (!stack)
 		return ;
@@ -36,7 +37,7 @@ void	push(t_stack **stack, t_stack *node)
 	}
 }
 
-t_stack  *pop(t_stack **stack)
+t_stack		*pop(t_stack **stack)
 {
 	t_stack *pop;
 
@@ -49,11 +50,11 @@ t_stack  *pop(t_stack **stack)
 	return (pop);
 }
 
-void	free_stack(t_stack *stack)
+void		free_stack(t_stack *stack)
 {
 	t_stack *to_del;
 
-	while(stack)
+	while (stack)
 	{
 		to_del = stack;
 		stack = stack->next;
@@ -61,7 +62,7 @@ void	free_stack(t_stack *stack)
 	}
 }
 
-void	print_stack(t_stack *stack)
+void		print_stack(t_stack *stack)
 {
 	if (!stack)
 		return ;

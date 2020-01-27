@@ -6,13 +6,13 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 18:17:05 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 20:56:54 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	more_free(char **str)
+static void		more_free(char **str)
 {
 	int i;
 
@@ -24,11 +24,11 @@ static void	more_free(char **str)
 
 static	void	push_to_stack(char **split_line, t_stack **coord, t_map *map)
 {
-	int x;
-	char **scc;
+	int		x;
+	char	**scc;
 
 	x = 0;
-	while(split_line[x])
+	while (split_line[x])
 	{
 		scc = ft_strsplit(split_line[x++], ',');
 		if (!ft_isnumber(scc[0], 10))
@@ -45,11 +45,11 @@ static	void	push_to_stack(char **split_line, t_stack **coord, t_map *map)
 		error("Some problems with map...\n");
 }
 
-int		read_to_stack(int fd, t_stack **coord, t_map *map)
+int				read_to_stack(int fd, t_stack **coord, t_map *map)
 {
-	char **split_line;
-	char *line;
-	int res;
+	char	**split_line;
+	char	*line;
+	int		res;
 
 	line = NULL;
 	while ((res = get_next_line(fd, &line)) == 1)
@@ -66,4 +66,3 @@ int		read_to_stack(int fd, t_stack **coord, t_map *map)
 		error("Some problems with map...\n");
 	return (res);
 }
-
