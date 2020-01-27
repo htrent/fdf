@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/26 16:39:44 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 12:46:59 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	iso_projection(t_point *p)
 
 	prev_x = p->x;
 	prev_y = p->y;
-	p->x = (prev_x - prev_y) * cos(M_PI / 6);			//x = (prev_x - prev_y) * cos(M_PI/6);
-	p->y = (prev_x + prev_y) * sin(M_PI / 6) - p->z;	//y = (prev_x + prev_y) * sin(M_PI_6) - z;
+	p->x = (prev_x - prev_y) * cos(M_PI / 6);
+	p->y = (prev_x + prev_y) * sin(M_PI / 6) - p->z;
 }
 
 t_point		project(t_point p, t_fdf *fdf)
@@ -59,14 +59,14 @@ t_point		project(t_point p, t_fdf *fdf)
 	p.x *= fdf->zoom;
 	p.y *= fdf->zoom;
 	p.z *= fdf->zoom / fdf->z_high;
-	p.x -= (fdf->width * fdf->zoom) / 2;
-	p.y -= (fdf->height * fdf->zoom) / 2;
+	p.x -= (fdf->map->width * fdf->zoom) / 2;
+	p.y -= (fdf->map->height * fdf->zoom) / 2;
 	rotate_x(&p.y, &p.z, fdf->alpha);
 	rotate_y(&p.x, &p.z, fdf->beta);
 	rotate_z(&p.x, &p.y, fdf->gamma);
 	if (fdf->projection == ISO)
 		iso_projection(&p);
 	p.x += (WIDTH - MENU_WIDTH) / 2 + fdf->offset_x + MENU_WIDTH;
-	p.y += (HEIGHT + fdf->height * fdf->zoom) / 2 + fdf->offset_y;
+	p.y += (HEIGHT + fdf->map->height * fdf->zoom) / 2 + fdf->offset_y;
 	return (p);
 }

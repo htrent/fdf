@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/26 16:39:44 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/22 21:13:36 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,48 +30,23 @@ void	mlx_hooks(t_fdf *fdf)
 
 int		deal_key(int keycode, t_fdf *fdf)
 {
-	//printf("key: %d\n", keycode);
 	if (keycode == KEY_ESC)
 		exit(0);
-	if (keycode == KEY_MINUS)
-		fdf->zoom--;
-	if (keycode == KEY_PLUS)
-		fdf->zoom++;
-	if (keycode == KEY_UP)
-		fdf->offset_y -= fdf->zoom / 5 + 1;
-	if (keycode == KEY_DOWN)
-		fdf->offset_y += fdf->zoom / 5 + 1;
-	if (keycode == KEY_LEFT)
-		fdf->offset_x -= fdf->zoom / 5 + 1;
-	if (keycode == KEY_RIGHT)
-		fdf->offset_x += fdf->zoom / 5 + 1;
-	if (keycode == KEY_6_PAD)
-		fdf->beta += 0.05;
-	if (keycode == KEY_4_PAD)
-		fdf->beta -= 0.05;
-	if (keycode == KEY_8_PAD)
-		fdf->alpha += 0.05;
-	if (keycode == KEY_2_PAD)
-		fdf->alpha -= 0.05;
-	if (keycode == KEY_1_PAD || keycode == KEY_3_PAD)
-		fdf->gamma += 0.05;
-	if (keycode == KEY_7_PAD || keycode == KEY_9_PAD)
-		fdf->gamma -= 0.05;
+	if (keycode == KEY_MINUS || keycode == KEY_PLUS || keycode == KEY_UP ||
+		keycode == KEY_DOWN || keycode == KEY_LEFT || keycode == KEY_RIGHT)
+		zoom_and_move(keycode, fdf);
+	if (keycode == KEY_6_PAD || keycode == KEY_4_PAD || keycode == KEY_8_PAD ||
+		keycode == KEY_2_PAD || keycode == KEY_1_PAD || keycode == KEY_3_PAD ||
+		keycode == KEY_7_PAD || keycode == KEY_9_PAD)
+		rotation(keycode, fdf);
 	if (keycode == KEY_I || keycode == KEY_P)
-	{
-		fdf->projection = (keycode == KEY_I) ? ISO : PARALLEL;
-		fdf->alpha = 0;
-		fdf->beta = 0;
-		fdf->gamma = 0;
-		fdf->offset_x = 0;
-		fdf->offset_y = 0;
-		fdf->zoom = 30;
-		fdf->z_high = 1;
-	}
+		change_proj(keycode, fdf);
 	if (keycode == KEY_MORE && fdf->z_high > 0.1)
 		fdf->z_high -= 0.05;
 	if (keycode == KEY_LESS && fdf->z_high <= 20)
 		fdf->z_high += 0.1;
+	if (keycode == KEY_T)
+        fdf->menu = (fdf->menu == TRANSPARENT) ? NOT_TRANSPARENT : TRANSPARENT;
 	draw_map(fdf);
 	return (keycode);
 }

@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/26 19:07:49 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 18:04:36 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,14 @@ int get_color(t_point p0, t_point p1, float percent)
 	return ((r << 16) + (g << 8) + b);
 }
 
-int 	get_defcl(float percent)
+int 	get_defcl(int z, t_map *map)
 {
+	double percent;
+
+	percent = z * 1.0 / (map->z_max - map->z_min);
 	if (percent <= 0.3334)
 		return (DEF_CLR);
 	if (percent <= 0.6667)
 		return (0x00ff00);
 	return (0xff0000);
 }
-
-/*	if (percent < 0.1428)
-		return (0xff0000); //red
-	if (percent < 0.2857)
-		return (0xff4f00); //orange
-	if (percent < 0.42857)
-		return (0xf7ff00); //yellow
-	if (percent < 0.57142)
-		return (0x0bda51); //green
-	if (percent < 0.7143)
-		return (0x1e90ff); //light blue
-	if (percent < 0.8571)
-		return (DEF_CLR);  //blue
-	return (0x4d0092);     //violet
- */

@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 17:02:57 by htrent            #+#    #+#             */
-/*   Updated: 2019/09/05 12:30:13 by htrent           ###   ########.fr       */
+/*   Created: 2019/10/31 12:45:30 by htrent            #+#    #+#             */
+/*   Updated: 2020/01/27 17:48:52 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+t_gnl_list	*ft_create_elem_gnl(char data, int fd)
 {
-	char		*str;
-	char const	*buf;
-	char		*ret;
+	t_gnl_list *list;
 
-	if (!s1 || !s2)
-		return (NULL);
-	str = ft_strnew(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (str == NULL)
-		return (NULL);
-	ret = str;
-	buf = s1;
-	while (*buf)
-		*(str++) = *(buf++);
-	buf = s2;
-	while (*buf)
-		*(str++) = *(buf++);
-	//free((char *)s1);
-	return (ret);
+	list = (t_gnl_list *)malloc(sizeof(t_gnl_list));
+	list->next = NULL;
+	list->data = data;
+	list->fd = fd;
+	return (list);
 }

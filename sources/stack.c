@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/24 14:33:30 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 12:19:47 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,19 @@ void	push(t_stack **stack, t_stack *node)
 		node->next = *stack;
 		*stack = node;
 	}
+}
+
+t_stack  *pop(t_stack **stack)
+{
+	t_stack *pop;
+
+	pop = NULL;
+	if (stack && *stack)
+	{
+		pop = *stack;
+		*stack = (*stack)->next;
+	}
+	return (pop);
 }
 
 void	free_stack(t_stack *stack)

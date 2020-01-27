@@ -1,10 +1,8 @@
-
-
 .PHONY: all clean fclean re
 
 NAME = fdf
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -O2 -O0 -g
 LIBRARIES = -lmlx -lft -L$(LIBFT_DIRECTORY) -L$(MINILIBX_DIRECTORY) -framework OpenGL -framework AppKit
 INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(MINILIBX_HEADERS)
 
@@ -21,7 +19,21 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST = main.c utils.c stack.c drawing.c mouse.c read.c ctrls.c projection.c map.c color.c init.c
+SOURCES_LIST = main.c \
+ 			utils.c \
+ 			stack.c \
+ 			drawing.c \
+ 			mouse.c \
+ 			read.c \
+ 			ctrls.c \
+ 			projection.c \
+ 			map.c \
+ 			color.c \
+ 			init.c \
+ 			utils2.c \
+ 			funcs_for_hooks.c \
+ 			rectangle.c \
+ 			menu.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objects/

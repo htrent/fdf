@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/26 16:31:06 by htrent           ###   ########.fr       */
+/*   Updated: 2019/12/27 15:29:11 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			mouse_press(int button, int x, int y, t_fdf *fdf)
 	(void)y;
 	if (button == MOUSE_SCROLL_UP)
 		fdf->zoom++;
-	if (button == MOUSE_SCROLL_DOWN)
+	if (button == MOUSE_SCROLL_DOWN && fdf->zoom > 1)
 		fdf->zoom--;
 	if (button == MOUSE_LEFT_CLICK)
 		fdf->mouse_status = PRESSED_LEFT;

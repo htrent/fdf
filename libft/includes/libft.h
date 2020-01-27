@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 13:45:13 by htrent            #+#    #+#             */
-/*   Updated: 2019/09/17 18:02:59 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/27 17:37:55 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
-# define BUFF_SIZE 10
+# include <sys/types.h>
+# define BUFF_SIZE 2048
 
 typedef struct			s_list
 {
@@ -25,6 +26,13 @@ typedef struct			s_list
 	size_t				content_size;
 	struct s_list		*next;
 }						t_list;
+
+typedef struct		s_file
+{
+	int				fd;
+	char			*str;
+	struct s_file	*next;
+}					t_file;
 
 typedef struct			s_gnl_list
 {
@@ -101,7 +109,7 @@ t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void					ft_lstadd_back(t_list **alst, t_list *new);
 void					ft_print_list(t_gnl_list *list);
 t_list					*ft_create_node(char *content, size_t content_size);
-
+t_gnl_list				*ft_create_elem_gnl(char data, int fd);
 int						get_next_line(const int fd, char **line);
 
 #endif
