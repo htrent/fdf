@@ -55,7 +55,7 @@ void	ft_help(t_gnl_list **list, t_gnl_list *buf, char *str, int fd)
 			*(str++) = buf->data;
 			buf = buf->next;
 			free(to_clear);
-			if (*(str - 1) == '\n'/*|| *(str - 1) == EOF*/)
+			if (*(str - 1) == '\n')
 				break ;
 		}
 		else
@@ -63,7 +63,7 @@ void	ft_help(t_gnl_list **list, t_gnl_list *buf, char *str, int fd)
 			prev = buf;
 			buf = buf->next;
 		}
-	if (*(str - 1) == '\n'/* || *(str - 1) == EOF*/)
+	if (*(str - 1) == '\n')
 		*(str - 1) = '\0';
 }
 
@@ -92,7 +92,7 @@ int		ft_check_list(t_gnl_list *list, int fd)
 		if (buf->fd == fd)
 		{
 			i++;
-			if (buf->data == '\n'/* || buf->data == EOF*/)
+			if (buf->data == '\n')
 				return (i);
 		}
 		buf = buf->next;

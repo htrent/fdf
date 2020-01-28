@@ -6,7 +6,7 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 17:59:25 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/28 12:11:45 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		main(int argc, char **argv)
 	if (argc != 2)
 		error("Usage: ./fdf file_with_map\n");
 	if ((fd = open(argv[1], O_RDONLY)) <= 0)
-		error("Wrong filename...\nGive me existed file\n*_*\n");
+		error("Wrong filename... Please, give me existed file\n");
 	map = map_init();
 	if (read_to_stack(fd, &coord, map) == -1)
 		error("There are some problems with map...\n");

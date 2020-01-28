@@ -6,13 +6,13 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 19:53:58 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/28 12:57:59 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	show_text(t_fdf *fdf)
+void		show_text(t_fdf *fdf)
 {
 	if ((fdf->mouse_pos.x < MENU_WIDTH && fdf->mouse_pos.y < MENU_HEIGHT &&
 		fdf->menu == NOT_PERMANENT) || fdf->menu == PERMANENT)
@@ -22,7 +22,7 @@ void	show_text(t_fdf *fdf)
 	show_program(fdf);
 }
 
-void	show_hint(t_fdf *fdf)
+void		show_hint(t_fdf *fdf)
 {
 	mlx_string_put(fdf->mlx, fdf->win, 50, 80, 0x222222,
 			"PLACE YOUR MOUSE");
@@ -34,13 +34,29 @@ void	show_hint(t_fdf *fdf)
 			"(or press M key)");
 }
 
-void	show_program(t_fdf *fdf)
+void		show_program(t_fdf *fdf)
 {
-	mlx_string_put(fdf->mlx, fdf->win, 10, 5, 0x00ff00, "Map: ");
-	mlx_string_put(fdf->mlx, fdf->win, 55, 5, 0x4B0082, fdf->map_name);
+	mlx_string_put(fdf->mlx, fdf->win, 10, 5, DARK_VIOLET, "Map: ");
+	mlx_string_put(fdf->mlx, fdf->win, 55, 5, DARK_BLUE, fdf->map_name);
 }
 
-void	show_menu(t_fdf *fdf)
+static void	show_menu2(t_fdf *fdf)
+{
+	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 200, MENU_CLR,
+			"Use NUM_PAD/left_click_mouse to rotate");
+	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 230, MENU_CLR,
+			"\"E\" for Dark color scheme");
+	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 260, MENU_CLR,
+			"\"D\" for Default color scheme");
+	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 290, MENU_CLR,
+			"\"F\" for Test color scheme");
+	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 320, MENU_CLR,
+			"\"R\" for Rainbow color scheme");
+	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 350, MENU_CLR,
+			"\"W\" for random color scheme");
+}
+
+void		show_menu(t_fdf *fdf)
 {
 	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 20, MENU_CLR,
 			"\"+\" or \"-\" to zoom");
@@ -54,6 +70,5 @@ void	show_menu(t_fdf *fdf)
 			"Use arrows/right_click_mouse to move");
 	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 170, MENU_CLR,
 			"Use \">\" or \"<\" to change altitude");
-	mlx_string_put(fdf->mlx, fdf->win, 10, HEIGHT_OF_HEADER + 200, MENU_CLR,
-			"Use NUM_PAD/left_click_mouse to rotate");
+	show_menu2(fdf);
 }

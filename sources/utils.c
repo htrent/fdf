@@ -23,7 +23,7 @@ int			min(int a, int b)
 	return ((a > b) ? b : a);
 }
 
-t_point		new_point_map(int x, int y, t_map *map)
+t_point		new_point_map(int x, int y, t_map *map, t_fdf *fdf)
 {
 	t_point p;
 
@@ -31,7 +31,7 @@ t_point		new_point_map(int x, int y, t_map *map)
 	p.y = y;
 	p.z = map->coords[y * map->width + x].z;
 	p.color = (map->coords[y * map->width + x].color == -1) ?
-			get_defcl(map->coords[y * map->width + x].z, map) :
+			get_defcl(map->coords[y * map->width + x].z, map, fdf) :
 			map->coords[y * map->width + x].color;
 	return (p);
 }

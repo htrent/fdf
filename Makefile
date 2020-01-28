@@ -33,7 +33,8 @@ SOURCES_LIST = main.c \
  			utils2.c \
  			funcs_for_hooks.c \
  			rectangle.c \
- 			menu.c
+ 			menu.c \
+ 			color_schemes.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objects/

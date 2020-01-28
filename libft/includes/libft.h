@@ -27,13 +27,6 @@ typedef struct			s_list
 	struct s_list		*next;
 }						t_list;
 
-typedef struct		s_file
-{
-	int				fd;
-	char			*str;
-	struct s_file	*next;
-}					t_file;
-
 typedef struct			s_gnl_list
 {
 	int					fd;
@@ -65,7 +58,7 @@ char					*ft_strnstr(const char *haystack, const char *needle,
 int						ft_strcmp(const char *s1, const char *s2);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						ft_atoi(const char *str);
-int 					ft_atoi_base(const char *str, int str_base);
+int						ft_atoi_base(const char *str, int str_base);
 int						ft_isalpha(int c);
 int						ft_isdigit(int c);
 int						ft_isalnum(int c);

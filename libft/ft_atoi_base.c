@@ -6,13 +6,13 @@
 /*   By: htrent <htrent@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 16:58:37 by htrent            #+#    #+#             */
-/*   Updated: 2019/12/26 18:29:15 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/28 13:38:30 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int ft_pow(int a, int b)
+static int	ft_pow(int a, int b)
 {
 	int i;
 	int c;
@@ -27,14 +27,13 @@ static int ft_pow(int a, int b)
 		i++;
 	}
 	return (c);
-
 }
 
-static int check_digit(char c, int str_base)
+static int	check_digit(char c, int str_base)
 {
-	int i;
-	char *digits;
-	char *digits_up;
+	int		i;
+	char	*digits;
+	char	*digits_up;
 
 	digits = "0123456789abcdef";
 	digits_up = "0123456789ABCDEF";
@@ -48,7 +47,7 @@ static int check_digit(char c, int str_base)
 	return (0);
 }
 
-static int max_pos(const char *str, int str_base)
+static int	max_pos(const char *str, int str_base)
 {
 	int i;
 
@@ -61,7 +60,7 @@ static int max_pos(const char *str, int str_base)
 	return (i);
 }
 
-static int add_to_num(char c, int str_base, int pos)
+static int	add_to_num(char c, int str_base, int pos)
 {
 	if (c >= 'a' && c <= 'f')
 		return ((c - 87) * ft_pow(str_base, pos));
@@ -71,7 +70,7 @@ static int add_to_num(char c, int str_base, int pos)
 		return ((c - 48) * ft_pow(str_base, pos));
 }
 
-int ft_atoi_base(const char *str, int str_base)
+int			ft_atoi_base(const char *str, int str_base)
 {
 	int num;
 	int sign;

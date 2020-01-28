@@ -30,6 +30,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	buf = s2;
 	while (*buf)
 		*(str++) = *(buf++);
-	//free((char *)s1);
+	free((char *)s1);
 	return (ret);
 }

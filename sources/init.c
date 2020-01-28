@@ -6,13 +6,13 @@
 /*   By: htrent <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:49 by htrent            #+#    #+#             */
-/*   Updated: 2020/01/27 21:06:59 by htrent           ###   ########.fr       */
+/*   Updated: 2020/01/28 12:44:23 by htrent           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_map	*map_init(void)
+t_map			*map_init(void)
 {
 	t_map	*map;
 
@@ -21,12 +21,19 @@ t_map	*map_init(void)
 	map->width = 0;
 	map->height = 0;
 	map->coords = NULL;
-	map->z_max = -2147483648;
-	map->z_min = 2147483647;
+	map->z_max = MIN_INT;
+	map->z_min = MAX_INT;
 	return (map);
 }
 
-t_fdf	*fdf_init(t_map *map)
+static	void	fdf_init1(t_fdf *fdf)
+{
+	fdf->menu_tr = NOT_TRANSPARENT;
+	fdf->menu = NOT_PERMANENT;
+	fdf->color = DEFAULT_COLOR;
+}
+
+t_fdf			*fdf_init(t_map *map)
 {
 	t_fdf	*fdf;
 
@@ -45,12 +52,11 @@ t_fdf	*fdf_init(t_map *map)
 	fdf->gamma = 0;
 	fdf->projection = ISO;
 	fdf->z_high = 1;
-	fdf->zoom = min(WIDTH / (2 * fdf->map->width),
-			HEIGHT / (2 * fdf->map->height));
+	fdf->zoom = min(WIDTH / (2.5 * fdf->map->width),
+					HEIGHT / (2.5 * fdf->map->height));
 	fdf->mouse_status = NOTPRESSED;
 	fdf->mouse_pos.x = WIDTH / 2;
 	fdf->mouse_pos.y = HEIGHT / 2;
-	fdf->menu_tr = NOT_TRANSPARENT;
-	fdf->menu = NOT_PERMANENT;
+	fdf_init1(fdf);
 	return (fdf);
 }
